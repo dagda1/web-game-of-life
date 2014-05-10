@@ -1,4 +1,4 @@
-(ns web-game-of-life.core
+(ns web-game-of-life.app
   (:require [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]))
 

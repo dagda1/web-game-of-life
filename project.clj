@@ -8,8 +8,7 @@
     [org.clojure/clojurescript "0.0-2173"]
     [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
 
-    [ring/ring-jetty-adapter "1.2.0"]
-    [com.keminglabs/jetty7-websockets-async "0.1.0"]
+    [ring/ring-core "1.2.0"]
 
     [compojure "1.1.6"]
     [liberator "0.11.0"]
@@ -21,18 +20,23 @@
   :plugins
   [
     [lein-cljsbuild "1.0.2"]
+    [lein-ring "0.8.10"]
   ]
 
-  :source-paths ["src"]
+  :source-paths ["src/clj"]
+
+  ;https://github.com/jalehman/react-tutorial-om
+
+  :ring {:handler game-of-life.core/app
+         :init    game-of-life.core/init}
 
   :cljsbuild {
     :builds [{:id "dev"
-              :source-paths ["src"]
+              :source-paths ["src/cljs"]
               :compiler {
                 :output-to "dev"
                 :output-dir "out"
                 :optimizations :none
-                :source-map true}}]}
-
-  :main ^{:skip-aot true} session.main
+                :source-map true
+                :externs ["om/externs/react.js"]}}]}
 )
