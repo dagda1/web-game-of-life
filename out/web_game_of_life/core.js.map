@@ -1,0 +1,11 @@
+{"version":3,
+ "file":
+ "/Users/paulcowan/projects/web-game-of-life/out/web_game_of_life/core.js",
+ "sources":["core.cljs"],
+ "lineCount":13,
+ "mappings":
+ ";AAAA;;;;;;AAIA,AAACA;AAED,AAAKC,kCAAU,yBAAA,2CAAA,qDAAA,zHAACC;AAEhB,AAACC,uBACC,sBAAA,XAAKC,IAAIC,OACP,OAAAC,aAAA,KAAY,AAAA,mFAAOF;mCAFvB,2CAAA,3EAGEH,oIACS,wBAAA,xBAAGM",
+ "names":
+ ["cljs.core/enable-console-print!", "web-game-of-life.core/app-state",
+  "cljs.core/atom", "om.core/root", "app", "owner", "js/React.DOM.h1",
+  "js/document"]}
