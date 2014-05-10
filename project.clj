@@ -34,8 +34,8 @@
     :builds [{:id "dev"
               :source-paths ["src/cljs"]
               :compiler {
-                :output-to "dev"
-                :output-dir "out"
+                :output-to "resources/public/js/application.js"
+                :output-dir "resources/public/js/out"
                 :optimizations :none
                 :source-map true
                 :externs ["om/externs/react.js"]}}]}
