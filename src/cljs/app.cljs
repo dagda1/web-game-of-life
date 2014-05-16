@@ -4,24 +4,29 @@
 
 (enable-console-print!)
 
-(def app-state (atom {:world [[1 2 1] [2 1 1] [1 2 1]]}))
+(def app-state (atom {:world [[1 2 1] [2 1 1] [1 1 2]]}))
 
-(defn cell
-  [text]
-  (om/component
-    (dom/td nil text)))
+(defn cell [text]
+  (reify
+    om/IRender
+      (render [this]
+        (dom/td nil text))))
 
-(defn row
-  [data]
-    (om/component
-      (apply dom/tr nil
-        (om/build-all cell data))))
+(defn row [data]
+  (reify
+    om/IRender
+      (render [this]
+        (apply dom/tr nil
+          (om/build-all cell data)))))
 
-(defn world-view
-  [data owner]
-    (om/component
-      (apply dom/table nil
-        (om/build-all row (:world data)))))
+(defn world-view [data owner]
+  (reify
+    om/IRender
+      (render [this]
+        (dom/div nil
+          (dom/h2 nil "Game Of Life")
+          (apply dom/table nil
+            (om/build-all row (:world data)))))))
 
 (om/root
   world-view
