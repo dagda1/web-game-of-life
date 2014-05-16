@@ -10,7 +10,7 @@
             [clojure.java.io :as io]))
 
 (defroutes app
-  (GET "/" [] (resp/redirect "/index.html"))
+  (ANY "/" [] (resp/redirect "/index.html"))
 
   (route/resources "/"))
 
@@ -19,4 +19,3 @@
       (wrap-params)))
 
 (ring/run-jetty #'handler {:port 3000})
-
