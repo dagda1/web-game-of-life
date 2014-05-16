@@ -9,6 +9,9 @@
     [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
 
     [ring/ring-core "1.2.0"]
+    [ring/ring-jetty-adapter "1.1.0"]
+
+    [liberator "0.11.0"]
 
     [compojure "1.1.6"]
     [liberator "0.11.0"]

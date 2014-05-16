@@ -1,19 +1,22 @@
 (ns game-of-life.core
-  (:require [compojure.handler :as handler]
+  (:require 
+            [liberator.core :refer [resource defresource]]
+            [compojure.handler :as handler]
             [compojure.route :as route]
-            [compojure.core :refer [GET POST defroutes]]
+            [compojure.core :refer [defroutes ANY GET]]
             [ring.util.response :as resp]
+            [ring.adapter.jetty :as ring]
+            [ring.middleware.params :refer [wrap-params]]
             [clojure.java.io :as io]))
 
-(defn init
-  []
-  (println "init"))
-
-(defroutes app-routes
+(defroutes app
   (GET "/" [] (resp/redirect "/index.html"))
 
   (route/resources "/"))
 
-(def app
-  (-> #'app-routes
-      handler/api))
+(def handler
+  (-> app
+      (wrap-params)))
+
+(ring/run-jetty #'handler {:port 3000})
+
