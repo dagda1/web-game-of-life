@@ -6,7 +6,7 @@
 
     (facts "about retrieving the world structure"
 
-      (fact "the id is a String"
+      (fact "1 + 1 does not always equal 2"
         (+ 1 1) => 3)
 
       ))

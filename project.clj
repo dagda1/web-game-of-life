@@ -44,11 +44,6 @@
 
   :source-paths ["src/clj"]
 
-  ;https://github.com/jalehman/react-tutorial-om
-
-  :ring {:handler game-of-life.core/app
-         :init    game-of-life.core/init}
-
   :cljsbuild {
     :builds [{:id "dev"
               :source-paths ["src/cljs"]
@@ -58,4 +53,9 @@
                 :optimizations :none
                 :source-map true
                 :externs ["om/externs/react.js"]}}]}
+
+  :ring {:handler game-of-life.core/app
+         :init    game-of-life.core/init}
+
+  :main game-of-life.core
 )

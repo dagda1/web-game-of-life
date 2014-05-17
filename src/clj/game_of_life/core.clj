@@ -1,5 +1,5 @@
 (ns game-of-life.core
-  (:require 
+  (:require
             [liberator.core :refer [resource defresource]]
             [compojure.handler :as handler]
             [compojure.route :as route]
@@ -14,8 +14,10 @@
 
   (route/resources "/"))
 
-(def handler
-  (-> app
-      (wrap-params)))
+(defn start [port]
+  (ring/run-jetty app {:port port :join? false}))
 
-(ring/run-jetty #'handler {:port 3000})
+(defn -main []
+  (let [port (Integer/parseInt
+       (or (System/getenv "PORT") "3000"))]
+  (start port)))
