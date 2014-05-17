@@ -14,14 +14,14 @@
 (defn init-world [dimensions]
   (vec (repeat dimensions (vec (take dimensions (repeatedly #(rand-int 2)))))))
 
-(defresource get-world
+(defresource get-world [dimensions]
   :available-media-types ["application/json"]
   :available-charsets ["utf-8"]
-  :handle-ok (json/generate-string (init-world 6)))
+  :handle-ok (json/generate-string (init-world dimensions)))
 
 (defroutes app
   (ANY "/" [] (resp/redirect "/index.html"))
-  (ANY "/get-world" [] get-world)
+  (ANY "/get-world/:dimensions" [dimensions] (get-world (Integer/parseInt dimensions)))
 
   (route/resources "/"))
 

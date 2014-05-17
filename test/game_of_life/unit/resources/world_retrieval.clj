@@ -13,7 +13,7 @@
 
   (facts "Get initial world"
     (let [handler (ANY "/" [] game-of-life.core/get-world)
-          response (handler (request :get "/"))]
+          response (handler (request :get "/3"))]
       (println response)
       response => OK
       response => (content-type "application/json;charset=UTF-8")
