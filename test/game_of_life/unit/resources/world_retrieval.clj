@@ -12,8 +12,8 @@
                      (after :facts (println "teardown"))]
 
   (facts "Get initial world"
-    (let [handler (ANY "/" [] game-of-life.core/get-world)
-          response (handler (request :get "/3"))]
+    (let [handler (ANY "/" [] (game-of-life.core/get-world 3) )
+          response (handler (request :get "/"))]
       (println response)
       response => OK
       response => (content-type "application/json;charset=UTF-8")
