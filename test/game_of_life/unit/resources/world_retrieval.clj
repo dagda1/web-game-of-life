@@ -5,7 +5,7 @@
   (:use
    [liberator.representation :only [->when]]
    [ring.mock.request :only [request header]]
-   [compojure.core :only [ANY]]
+   [compojure.core :only [ANY GET PUT]]
    [liberator.core  :only [resource with-console-logger]]
    [midje.sweet :only [fact facts truthy against-background contains future-fact future-facts defchecker tabular before with-state-changes]]
    [checkers]))
@@ -14,9 +14,17 @@
                      (after :facts (println "teardown"))]
 
   (facts "Get initial world"
-    (let [handler (ANY "/" [] (game-of-life.core/get-world 3) )
+    (let [handler (GET "/" [] (game-of-life.core/world 3) )
           response (handler (request :get "/"))]
       (println (vec (json/parse-string (response :body))))
       response => OK
-      response => (content-type "application/json;charset=UTF-8")
-      )))
+      response => (content-type "application/json;charset=UTF-8"))))
+
+
+  ; (facts "Update the world to get a new view"
+  ;   (let [handler (GET "/" [] (game-of-life.core/world [[1 0 1] [0 0 1] [1 0 0]]) )
+  ;         response (handler (request :get "/"))]
+  ;     (println (vec (json/parse-string (response :body))))
+  ;     response => OK
+  ;     response => (content-type "application/json;charset=UTF-8"))))
+
