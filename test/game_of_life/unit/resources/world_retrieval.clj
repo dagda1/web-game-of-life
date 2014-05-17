@@ -1,5 +1,7 @@
 (ns game-of-life.unit.resources.world-retrieval
-  (:require game-of-life.core)
+  (:require
+    [cheshire.core :as json]
+    [game-of-life.core])
   (:use
    [liberator.representation :only [->when]]
    [ring.mock.request :only [request header]]
@@ -14,7 +16,7 @@
   (facts "Get initial world"
     (let [handler (ANY "/" [] (game-of-life.core/get-world 3) )
           response (handler (request :get "/"))]
-      (println response)
+      (println (response :body))
       response => OK
       response => (content-type "application/json;charset=UTF-8")
       )))
