@@ -1,6 +1,6 @@
 (ns game-of-life.core
   (:require
-            [liberator.core :refer [resource defresource]]
+            [liberator.core :refer [resource defresource by-method]]
             [liberator.representation :refer :all]
             [cheshire.core :as json]
             [compojure.handler :as handler]
@@ -15,9 +15,11 @@
   (vec (repeat dimensions (vec (take dimensions (repeatedly #(rand-int 2)))))))
 
 (defresource get-world [dimensions]
+  :allowed-methods [:get :put]
   :available-media-types ["application/json"]
   :available-charsets ["utf-8"]
-  :handle-ok (json/generate-string (init-world dimensions)))
+  :handle-ok (by-method {
+    :get (json/generate-string (init-world dimensions))}))
 
 (defroutes app
   (ANY "/" [] (resp/redirect "/index.html"))
