@@ -11,14 +11,13 @@
             [ring.middleware.params :refer [wrap-params]]
             [clojure.java.io :as io]))
 
-(defn init-world []
-  [[2 1 2] [1 1 2] [2 2 1]]
-)
+(defn init-world [dimensions]
+  (vec (repeat dimensions (vec (take dimensions (repeatedly #(rand-int 2)))))))
 
 (defresource get-world
   :available-media-types ["application/json"]
   :available-charsets ["utf-8"]
-  :handle-ok (json/generate-string (init-world)))
+  :handle-ok (json/generate-string (init-world 6)))
 
 (defroutes app
   (ANY "/" [] (resp/redirect "/index.html"))
