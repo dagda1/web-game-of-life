@@ -1,12 +1,20 @@
 (ns game-of-life.unit.resources.world-retrieval
-  (:require [midje.sweet :refer :all]))
+  (:require game-of-life.core)
+  (:use
+   [liberator.representation :only [->when]]
+   [ring.mock.request :only [request header]]
+   [compojure.core :only [ANY]]
+   [liberator.core  :only [resource with-console-logger]]
+   [midje.sweet :only [fact facts truthy against-background contains future-fact future-facts defchecker tabular before with-state-changes]]
+   [checkers]))
 
-  (with-state-changes [(before :facts (println "setup"))
-                       (after :facts (println "teardown"))]
+(with-state-changes [(before :facts (println "setup"))
+                     (after :facts (println "teardown"))]
 
-    (facts "about retrieving the world structure"
-
-      (fact "1 + 1 does not always equal 2"
-        (+ 1 1) => 3)
-
-      ))
+  (facts "Get initial world"
+    (let [handler (ANY "/" [] game-of-life.core/get-world)
+          response (handler (request :get "/"))]
+      (println response)
+      response => OK
+      response => (content-type "application/json;charset=UTF-8")
+      )))

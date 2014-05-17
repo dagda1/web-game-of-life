@@ -24,6 +24,7 @@
     :test {
       :dependencies [
                      [midje "1.6.3"] ; Example-based testing https://github.com/marick/Midje
+                     [ring-mock "0.1.2"]
                     ]
       :plugins [
                 [lein-midje "3.1.3"] ; Example-based testing https://github.com/marick/lein-midje
