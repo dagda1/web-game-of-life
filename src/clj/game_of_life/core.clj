@@ -11,20 +11,29 @@
             [ring.middleware.params :refer [wrap-params]]
             [clojure.java.io :as io]))
 
+; (defn orbit-world [current ctx]
+;   {print-ln 
+;   (json/generate-string current))
+; 
 (defn init-world [dimensions]
-  (vec (repeat dimensions (vec (take dimensions (repeatedly #(rand-int 2)))))))
+  (let [world (vec (repeat dimensions (vec (take dimensions (repeatedly #(rand-int 2))))))]
+    (json/generate-string world)))
+
 
 (defresource world [dimensions]
   :allowed-methods [:get :put]
   :available-media-types ["application/json"]
   :available-charsets ["utf-8"]
   :handle-ok (by-method {
-    :get (json/generate-string (init-world dimensions))}))
+    :get (fn [_] (init-world dimensions))}))
+    ; :get (json/generate-string (init-world dimensions))
+    ; :put (fn [ctx] (orbit-world dimensions ctx))}))
 
 (defroutes app
   (ANY "/" [] (resp/redirect "/index.html"))
-  (GET "/world/:dimensions" [dimensions] (world (Integer/parseInt dimensions)))
-  (PUT "/world/:world" [current] (println current))
+  (ANY "/world/:dimensions" [dimensions] (world (Integer/parseInt dimensions)))
+  ; (PUT "/world/:world" [current] (println current) (world (vec (json/parse-string current))))
+  ; (GET "/world/:dimensions" [dimensions] (world (Integer/parseInt dimensions)))
 
   (route/resources "/"))
 

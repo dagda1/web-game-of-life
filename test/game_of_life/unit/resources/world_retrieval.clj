@@ -22,9 +22,11 @@
 
 
   ; (facts "Update the world to get a new view"
-  ;   (let [handler (GET "/" [] (game-of-life.core/world [[1 0 1] [0 0 1] [1 0 0]]) )
-  ;         response (handler (request :get "/"))]
-  ;     (println (vec (json/parse-string (response :body))))
+  ;   (let [world (json/generate-string [[1 0 1] [0 0 1] [1 0 0]])
+  ;         response (world (-> (request :put "/world")
+  ;                  (assoc :body world)
+  ;                  (header "content-type" "application/json")))]
+  ;     (println (json/parse-string (response :body)))
   ;     response => OK
   ;     response => (content-type "application/json;charset=UTF-8"))))
 
