@@ -9,7 +9,7 @@
     [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
 
     [ring/ring-core "1.2.0"]
-    [ring/ring-jetty-adapter "1.2.0"] ; Web Server https://github.com/ring-clojure/ring
+    [ring/ring-jetty-adapter "1.2.1" :exclusions [joda-time]]
 
     [cheshire "5.3.1"] ; JSON de/encoding https://github.com/dakrone/cheshire
     [liberator "0.11.0"]
@@ -21,10 +21,15 @@
   ]
 
   :profiles {
+    :dev {
+      :dependencies [
+                      [ring/ring-devel "1.2.1" :exclusions [joda-time]]
+                    ]
+    }
     :test {
       :dependencies [
                      [midje "1.6.3"] ; Example-based testing https://github.com/marick/Midje
-                     [ring-mock "0.1.2"]
+                     [ring-mock "0.1.5"]
                     ]
       :plugins [
                 [lein-midje "3.1.3"] ; Example-based testing https://github.com/marick/lein-midje

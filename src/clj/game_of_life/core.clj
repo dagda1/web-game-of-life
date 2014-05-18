@@ -2,7 +2,7 @@
   (:require
             [liberator.core :refer [resource defresource by-method]]
             [liberator.representation :refer :all]
-            ; [liberator.dev :as dev]
+            [liberator.dev :refer (wrap-trace)]
             [cheshire.core :as json]
             [compojure.handler :as handler]
             [compojure.route :as route]
@@ -34,8 +34,12 @@
 
   (route/resources "/"))
 
+(def handler
+  (-> app
+      (wrap-trace :header :ui)))
+
 (defn start [port]
-  (ring/run-jetty app {:port port :join? false}))
+  (ring/run-jetty #'handler {:port port :join? false}))
 
 (defn -main []
   (let [port (Integer/parseInt
