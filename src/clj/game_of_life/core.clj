@@ -12,8 +12,15 @@
             [ring.middleware.params :refer [wrap-params]]
             [clojure.java.io :as io]))
 
+(defn body-as-string [ctx]
+  (if-let [body (get-in ctx [:request :body])]
+    (condp instance? body
+      java.lang.String body
+      (slurp (io/reader body)))))
+
 (defn orbit-world [dimensions ctx]
-  (let [world (json/parse-string (get-in ctx [:request :body]))]))
+  (let [in (json/parse-string (body-as-string ctx))]
+    (json/generate-string in)))
 
 (defn init-world [params]
   (let [dimensions (Integer/parseInt params)
@@ -24,9 +31,8 @@
   :allowed-methods [:get :put]
   :available-media-types ["application/json"]
   :available-charsets ["utf-8"]
-  :handle-ok (by-method {
-    :get (fn [_] (init-world dimensions))
-    :put (fn [ctx] (orbit-world dimensions ctx))}))
+  :handle-ok (fn [_] (init-world dimensions))
+  :put! (fn [ctx] (orbit-world dimensions ctx)))
 
 (defroutes app
   (ANY "/" [] (resp/redirect "/index.html"))
