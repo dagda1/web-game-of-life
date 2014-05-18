@@ -24,7 +24,23 @@
     :dev {
       :dependencies [
                       [ring/ring-devel "1.2.1" :exclusions [joda-time]]
+                      [print-foo "0.4.6"] ; Old school print debugging https://github.com/danielribeiro/print-foo
+                      [org.clojure/tools.trace "0.7.6"] ; Tracing macros/fns https://github.com/clojure/tools.trace
+                      [com.cemerick/piggieback "0.1.2"] ; ClojureScript bREPL from the nREPL https://github.com/cemerick/piggieback
+                      [clj-ns-browser "1.3.1"] ; Doc browser https://github.com/franks42/clj-ns-browser
+                      [ring-mock "0.1.5"]
                     ]
+      :injections [
+          (require '[clojure.pprint :refer :all]
+                   '[clojure.stacktrace :refer (print-stack-trace)]
+                   '[clojure.test :refer :all]
+                   '[print.foo :refer :all]
+                   '[clj-time.format :as t]
+                   '[clojure.string :as s]
+                   '[cljs.repl.browser :as b-repl]
+                   '[cemerick.piggieback :as pb])
+          (defn brepl [] (pb/cljs-repl :repl-env (b-repl/repl-env :port 9000)))
+                  ]
     }
     :test {
       :dependencies [
