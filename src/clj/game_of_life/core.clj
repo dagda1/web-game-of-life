@@ -2,6 +2,7 @@
   (:require
             [liberator.core :refer [resource defresource by-method]]
             [liberator.representation :refer :all]
+            ; [liberator.dev :as dev]
             [cheshire.core :as json]
             [compojure.handler :as handler]
             [compojure.route :as route]
@@ -11,29 +12,25 @@
             [ring.middleware.params :refer [wrap-params]]
             [clojure.java.io :as io]))
 
-; (defn orbit-world [current ctx]
-;   {print-ln 
-;   (json/generate-string current))
-; 
-(defn init-world [dimensions]
-  (let [world (vec (repeat dimensions (vec (take dimensions (repeatedly #(rand-int 2))))))]
-    (json/generate-string world)))
+(defn orbit-world [dimensions ctx]
+  (let [world (json/parse-string (get-in ctx [:request :body]))]))
 
+(defn init-world [params]
+  (let [dimensions (Integer/parseInt params)
+     world (vec (repeat dimensions (vec (take dimensions (repeatedly #(rand-int 2))))))]
+    (json/generate-string world)))
 
 (defresource world [dimensions]
   :allowed-methods [:get :put]
   :available-media-types ["application/json"]
   :available-charsets ["utf-8"]
   :handle-ok (by-method {
-    :get (fn [_] (init-world dimensions))}))
-    ; :get (json/generate-string (init-world dimensions))
-    ; :put (fn [ctx] (orbit-world dimensions ctx))}))
+    :get (fn [_] (init-world dimensions))
+    :put (fn [ctx] (orbit-world dimensions ctx))}))
 
 (defroutes app
   (ANY "/" [] (resp/redirect "/index.html"))
-  (ANY "/world/:dimensions" [dimensions] (world (Integer/parseInt dimensions)))
-  ; (PUT "/world/:world" [current] (println current) (world (vec (json/parse-string current))))
-  ; (GET "/world/:dimensions" [dimensions] (world (Integer/parseInt dimensions)))
+  (ANY "/world/:dimensions" [dimensions] (world dimensions))
 
   (route/resources "/"))
 
