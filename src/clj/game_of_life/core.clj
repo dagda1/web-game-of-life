@@ -18,9 +18,39 @@
       java.lang.String body
       (slurp (io/reader body)))))
 
+(def compass-points [[0 1][1 1][1 0][1 -1][0 -1][-1 1][-1 0][-1 -1]])
+
+(defn live-neighbours
+  [outer-index index cell world]
+    (reduce + (map (fn[[x y]]
+            (let [cord-x (+ outer-index x)
+                  cord-y (+ index y)
+                  next-cell (get-in world [cord-x cord-y])]
+                  (if next-cell
+                    (if (= next-cell 1) 1 0)
+                    0))) compass-points)))
+
+(defn change
+  [outer-index index cell world]
+    (let [live-count (live-neighbours outer-index index cell world)]
+      (cond
+        (< live-count 2) 0
+        (or (= live-count 2) (= live-count 3)) 1
+        (and (= cell 2) (> live-count 3)) 0
+        (and (= cell 1) (= live-count 3)) 1
+        :else 0)))
+
+(defn turn
+  [index cell world]
+    (mapv #(change index %1 %2 world) (range) cell))
+
+(defn live
+  [world]
+    (mapv #(turn %1 %2 world) (range) world))
+
 (defn orbit-world [dimensions ctx]
   (let [in (vec (json/parse-string (body-as-string ctx)))]
-    {:world in}))
+    {:world (live in)}))
 
 (defn init-world [params]
   (let [dimensions (Integer/parseInt params)

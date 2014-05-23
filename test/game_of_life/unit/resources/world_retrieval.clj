@@ -24,6 +24,8 @@
           response ((game-of-life.core/world "3") (-> (request :put "/")
                    (assoc :body world)
                    (header "content-type" "application/json")))]
-      (println (json/parse-string (response :body)))
-      response => CREATED
-      response => (content-type "application/json;charset=UTF-8"))))
+      (let [result (vec (json/parse-string (response :body)))]
+        (println result)
+        response => CREATED
+        response => (content-type "application/json;charset=UTF-8")
+        result => [[0 1 0] [1 0 0] [0 1 0]]))))
