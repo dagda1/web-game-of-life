@@ -18,3 +18,4 @@
   (header-value "Content-Type" expected))
 
 (def OK (is-status 200))
+(def CREATED (is-status 201))
