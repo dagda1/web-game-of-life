@@ -13,12 +13,12 @@
 (with-state-changes [(before :facts (println "setup"))
                      (after :facts (println "teardown"))]
 
-  (facts "Get initial world"
-    (let [handler (GET "/" [] (game-of-life.core/world "3") )
-          response (handler (request :get "/"))]
-      (println (vec (json/parse-string (response :body))))
-      response => OK
-      response => (content-type "application/json;charset=UTF-8")))
+  ; (facts "Get initial world"
+  ;   (let [handler (GET "/" [] (game-of-life.core/world "3") )
+  ;         response (handler (request :get "/"))]
+  ;     ; (println (vec (json/parse-string (response :body))))
+  ;     response => OK
+  ;     response => (content-type "application/json;charset=UTF-8")))
 
   (facts "Update the world to get a new view"
     (let [world (json/generate-string [[1 0 1] [0 0 1] [1 0 0]])

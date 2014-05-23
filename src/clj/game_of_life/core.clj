@@ -19,8 +19,8 @@
       (slurp (io/reader body)))))
 
 (defn orbit-world [dimensions ctx]
-  (let [in (json/parse-string (body-as-string ctx))]
-    (json/generate-string in)))
+  (let [in (vec (json/parse-string (body-as-string ctx)))]
+    {:world in}))
 
 (defn init-world [params]
   (let [dimensions (Integer/parseInt params)
@@ -31,7 +31,9 @@
   :allowed-methods [:get :put]
   :available-media-types ["application/json"]
   :available-charsets ["utf-8"]
-  :handle-ok (fn [_] (init-world dimensions))
+  :handle-ok (by-method {
+    :get (fn [ctx] (init-world dimensions))
+    :post (fn [ctx] (println str "here" ctx))})
   :put! (fn [ctx] (orbit-world dimensions ctx)))
 
 (defroutes app
