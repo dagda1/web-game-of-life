@@ -63,9 +63,10 @@
   :available-charsets ["utf-8"]
   :handle-ok (by-method {
     :get (fn [ctx] (init-world dimensions))
-    :put (fn [ctx] (println "does not get here ever, why?"))})
+    :put (fn [ctx] (json/generate-string (:world ctx)))})
   :put! (fn [ctx] (orbit-world dimensions ctx))
-  :handle-created (fn [ctx] (json/generate-string (:world ctx))))
+  :new? (by-method { :put false })
+  :respond-with-entity? ( by-method { :put true } ))
 
 (defroutes app
   (ANY "/" [] (resp/redirect "/index.html"))

@@ -25,7 +25,6 @@
                    (assoc :body world)
                    (header "content-type" "application/json")))]
       (let [result (vec (json/parse-string (response :body)))]
-        (println result)
-        response => CREATED
+        response => OK
         response => (content-type "application/json;charset=UTF-8")
         result => [[0 1 0] [1 0 0] [0 1 0]]))))
