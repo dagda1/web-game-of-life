@@ -16,6 +16,7 @@
 
     [compojure "1.1.8"] ; Web routing https://github.com/weavejester/compojure
     [liberator "0.11.0"] ; WebMachine (REST state machine) port to Clojure https://github.com/clojure-liberator/liberator
+    [cljs-http "0.1.2"]
 
     [om "0.5.0"]
   ]

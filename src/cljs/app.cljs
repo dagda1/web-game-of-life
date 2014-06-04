@@ -3,7 +3,8 @@
             [goog.net.XhrIo :as xhrio]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
-            [cljs.core.async :as async :refer [chan close!]])
+            [cljs-http.client :as http]
+            [cljs.core.async :refer [put! <! >! chan timeout]])
   (:require-macros
     [cljs.core.async.macros :refer [go alt!]]))
 
@@ -12,7 +13,17 @@
 (defn log [s]
   (.log js/console (str s)))
 
-(def app-state (atom {:world [[0 1 0] [1 0 0] [0 0 1]]}))
+(def world-url "/world/")
+
+(def app-state (atom {}))
+
+(defn get-world
+  [dimensions]
+  (let [url (str world-url dimensions)
+        ch (chan)]
+    (go (let [{world  :body} (<! (http/get url))]
+          (>! ch world)))
+    ch))
 
 (defn cell [text]
   (reify
@@ -27,8 +38,15 @@
         (apply dom/tr nil
           (om/build-all cell data)))))
 
-(defn world-view [data]
+(defn world-view [data owner opts]
   (reify
+    om/IInitState
+      (init-state [_]
+        (om/update! data #(assoc % :world [[]])))
+    om/IWillMount
+      (will-mount [_]
+        (go (let [world (<! (get-world (:dimensions opts)))]
+              (om/update! data #(assoc % :world world)))))
     om/IRender
       (render [this]
         (apply dom/table nil
@@ -40,7 +58,8 @@
       (render [this]
         (dom/div nil
           (dom/h1 nil "Game Of Life")
-          (om/build world-view data)))))
+          (om/build world-view data {:opts {:dimensions 10
+                                            :poll-interval 2000}})))))
 
 (om/root
   start-app
