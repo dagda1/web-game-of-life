@@ -1,10 +1,18 @@
 (ns web-game-of-life.app
-  (:require [om.core :as om :include-macros true]
-            [om.dom :as dom :include-macros true]))
+  (:require 
+            [goog.net.XhrIo :as xhrio]
+            [om.core :as om :include-macros true]
+            [om.dom :as dom :include-macros true]
+            [cljs.core.async :as async :refer [chan close!]])
+  (:require-macros
+    [cljs.core.async.macros :refer [go alt!]]))
 
 (enable-console-print!)
 
-(def app-state (atom {:world [[1 2 1] [2 1 1] [1 1 2]]}))
+(defn log [s]
+  (.log js/console (str s)))
+
+(def app-state (atom {:world [[0 1 0] [1 0 0] [0 0 1]]}))
 
 (defn cell [text]
   (reify
@@ -19,16 +27,22 @@
         (apply dom/tr nil
           (om/build-all cell data)))))
 
-(defn world-view [data owner]
+(defn world-view [data]
+  (reify
+    om/IRender
+      (render [this]
+        (apply dom/table nil
+          (om/build-all row (:world data))))))
+
+(defn start-app [data owner]
   (reify
     om/IRender
       (render [this]
         (dom/div nil
-          (dom/h2 nil "Game Of Life")
-          (apply dom/table nil
-            (om/build-all row (:world data)))))))
+          (dom/h1 nil "Game Of Life")
+          (om/build world-view data)))))
 
 (om/root
-  world-view
+  start-app
   app-state
   {:target (. js/document (getElementById "app"))})
