@@ -22,7 +22,7 @@
   (let [url (str world-url dimensions)
         ch (chan)]
     (go (let [{world  :body} (<! (http/get url))]
-          (>! ch world)))
+          (>! ch (vec world))))
     ch))
 
 (defn cell [text]
@@ -42,13 +42,15 @@
   (reify
     om/IInitState
       (init-state [_]
-        (om/update! data #(assoc % :world [[]])))
+        (om/transact! data [:world] (fn [] [])))
     om/IWillMount
       (will-mount [_]
         (go (let [world (<! (get-world (:dimensions opts)))]
+              (log (get-in world [9 9]))
               (om/update! data #(assoc % :world world)))))
     om/IRender
-      (render [this]
+      (render [_]
+        (log (get :world data))
         (apply dom/table nil
           (om/build-all row (:world data))))))
 
