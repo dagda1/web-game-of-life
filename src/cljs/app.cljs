@@ -46,11 +46,9 @@
     om/IWillMount
       (will-mount [_]
         (go (let [world (<! (get-world (:dimensions opts)))]
-              (log (get-in world [9 9]))
-              (om/update! data #(assoc % :world world)))))
+              (om/transact! data #(assoc % :world world)))))
     om/IRender
       (render [_]
-        (log (get :world data))
         (apply dom/table nil
           (om/build-all row (:world data))))))
 
@@ -60,7 +58,7 @@
       (render [this]
         (dom/div nil
           (dom/h1 nil "Game Of Life")
-          (om/build world-view data {:opts {:dimensions 10
+          (om/build world-view data {:opts {:dimensions 100
                                             :poll-interval 2000}})))))
 
 (om/root
