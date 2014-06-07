@@ -45,8 +45,11 @@
         (om/transact! data [:world] (fn [] [])))
     om/IWillMount
       (will-mount [_]
-        (go (let [world (<! (get-world (:dimensions opts)))]
-              (om/transact! data #(assoc % :world world)))))
+        (go (while true
+              (let [world (<! (get-world (:dimensions opts)))]
+                (om/transact! data #(assoc % :world world)))
+              (<! (timeout (:poll-interval opts))))))
+
     om/IRender
       (render [_]
         (apply dom/table nil
