@@ -80,7 +80,7 @@
     om/IRender
       (render [this]
         (dom/div nil
-          (dom/h1 nil "Game Of Life")
+          (dom/h1 nil "Cowan's Game Of Life")
           (om/build world-view data {:opts {:dimensions (get-dimensions)
                                             :poll-interval 2000}})))))
 

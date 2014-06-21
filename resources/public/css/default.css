@@ -9,6 +9,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+h1 {
+  text-align: center;
+}
+
 .world-view {
   border: 1px solid #dddddd;
   border-collapse: separate;
