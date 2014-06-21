@@ -15,7 +15,7 @@
 
 (def world-url "/world/")
 
-(def app-state (atom {}))
+(def app-state (atom {:world []}))
 
 (defn get-world
   [dimensions]
@@ -42,12 +42,17 @@
   (reify
     om/IInitState
       (init-state [_]
-        (om/transact! data [:world] (fn [] [])))
+        {:world [], :is-loaded false})
+
     om/IWillMount
       (will-mount [_]
         (go (while true
-              (let [world (<! (get-world (:dimensions opts)))]
-                (om/transact! data #(assoc % :world world)))
+              (if (om/get-state owner :is-loaded)
+                (log (om/get-state owner :is-loaded))
+                (let [world (<! (get-world (:dimensions opts)))]
+                  (om/set-state! owner :is-loaded true)
+                  (om/transact! data #(assoc % :world world))
+                  (swap! app-state assoc :world world)))
               (<! (timeout (:poll-interval opts))))))
 
     om/IRender
