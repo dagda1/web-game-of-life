@@ -59,7 +59,9 @@
                           (<! (update-world (:dimensions opts) (:world @data)))
                           (<! (get-world (:dimensions opts))))]
 
-                  (om/set-state! owner :is-loaded true)
+                  (when-not (om/get-state owner :is-loaded)
+                    (om/set-state! owner :is-loaded true))
+
                   (om/transact! data #(assoc % :world world))
                   (swap! app-state assoc :world world))
 
@@ -70,13 +72,16 @@
         (apply dom/table nil
           (om/build-all row (:world data))))))
 
+(defn get-dimensions []
+  100)
+
 (defn start-app [data owner]
   (reify
     om/IRender
       (render [this]
         (dom/div nil
           (dom/h1 nil "Game Of Life")
-          (om/build world-view data {:opts {:dimensions 100
+          (om/build world-view data {:opts {:dimensions (get-dimensions)
                                             :poll-interval 2000}})))))
 
 (om/root
