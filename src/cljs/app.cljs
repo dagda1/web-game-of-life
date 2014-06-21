@@ -37,7 +37,7 @@
   (reify
     om/IRender
       (render [this]
-        (dom/td nil text))))
+        (dom/td #js {:className (if (= text 1) "on" "off")} text))))
 
 (defn row [data]
   (reify
@@ -73,7 +73,7 @@
           (om/build-all row (:world data))))))
 
 (defn get-dimensions []
-  (Math/round (/ (.-innerWidth js/window) 50)))
+  (Math/round (/ (.-innerWidth js/window) 30)))
 
 (defn start-app [data owner]
   (reify
