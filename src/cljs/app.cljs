@@ -56,8 +56,8 @@
       (will-mount [_]
         (go (while true
               (let [world (if (om/get-state owner :is-loaded)
-                          (<! (update-world (:dimensions opts) (:world @data)))
-                          (<! (get-world (:dimensions opts))))]
+                            (<! (update-world (:dimensions opts) (:world @data)))
+                            (<! (get-world (:dimensions opts))))]
 
                   (when-not (om/get-state owner :is-loaded)
                     (om/set-state! owner :is-loaded true))
