@@ -31,10 +31,18 @@ body {
 }
 
 .world-view tr td.on {
-  background: #fff;
+  background-color: #fff;
 }
 
 
 .world-view tr td.off {
-  background: black;
+  background-color: black;
+}
+
+.td.off, td.on {
+  -webkit-transition: background-color 1000ms linear;
+  -moz-transition: background-color 1000ms linear;
+  -o-transition: background-color 1000ms linear;
+  -ms-transition: background-color 1000ms linear;
+  transition: background-color 1000ms linear;
 }
