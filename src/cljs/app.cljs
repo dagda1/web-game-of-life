@@ -55,14 +55,14 @@
     om/IWillMount
       (will-mount [_]
         (go (while true
-              (if (om/get-state owner :is-loaded)
-                (let [world (<! (update-world (:dimensions opts) (:world @data)))]
-                  (om/transact! data #(assoc % :world world))
-                  (swap! app-state assoc :world world))
-                (let [world (<! (get-world (:dimensions opts)))]
+              (let [world (if (om/get-state owner :is-loaded)
+                          (<! (update-world (:dimensions opts) (:world @data)))
+                          (<! (get-world (:dimensions opts))))]
+
                   (om/set-state! owner :is-loaded true)
                   (om/transact! data #(assoc % :world world))
-                  (swap! app-state assoc :world world)))
+                  (swap! app-state assoc :world world))
+
               (<! (timeout (:poll-interval opts))))))
 
     om/IRender
