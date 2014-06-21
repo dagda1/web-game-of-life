@@ -25,6 +25,12 @@
           (>! ch (vec world))))
     ch))
 
+(defn update-world
+  [dimensions world]
+  (log dimensions)
+  (log world)
+  world)
+
 (defn cell [text]
   (reify
     om/IRender
@@ -48,7 +54,9 @@
       (will-mount [_]
         (go (while true
               (if (om/get-state owner :is-loaded)
-                (log (om/get-state owner :is-loaded))
+                (let [world (update-world (:dimensions opts) (:world @data))]
+                  (om/transact! data #(assoc % :world world))
+                  (swap! app-state assoc :world world))
                 (let [world (<! (get-world (:dimensions opts)))]
                   (om/set-state! owner :is-loaded true)
                   (om/transact! data #(assoc % :world world))
