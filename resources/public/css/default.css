@@ -1,0 +1,40 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #f3f3f3;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.world-view {
+  border: 1px solid #dddddd;
+  border-collapse: separate;
+  border-left: 0;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.world-view tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+.world-view tr td {
+  width: 35px;
+  height: 12px;
+  border-collapse:separate;
+  empty-cells:show;
+}
+
+.world-view tr td.on {
+  background: #fff;
+}
+
+
+.world-view tr td.off {
+  background: black;
+}
