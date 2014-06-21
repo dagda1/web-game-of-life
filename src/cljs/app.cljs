@@ -73,7 +73,7 @@
           (om/build-all row (:world data))))))
 
 (defn get-dimensions []
-  100)
+  (Math/round (/ (.-innerWidth js/window) 50)))
 
 (defn start-app [data owner]
   (reify
