@@ -6,7 +6,8 @@
             [cljs-http.client :as http]
             [cljs.core.async :refer [put! <! >! chan timeout]])
   (:require-macros
-    [cljs.core.async.macros :refer [go alt!]]))
+    [cljs.core.async.macros :refer [go alt!]])
+  :gen-class)
 
 (enable-console-print!)
 
