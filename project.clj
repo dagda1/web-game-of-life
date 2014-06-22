@@ -82,5 +82,5 @@
   :ring {:handler game-of-life.core/app
          :init    game-of-life.core/init}
 
-  :main game-of-life.core
+  :main ^:skip-aot game-of-life.core
 )
