@@ -83,4 +83,5 @@
          :init    game-of-life.core/init}
 
   :main ^:skip-aot game-of-life.core
+  :min-lein-version "2.0.0"
 )
