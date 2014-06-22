@@ -1,13 +1,12 @@
 (ns web-game-of-life.app
-  (:require 
+  (:require
             [goog.net.XhrIo :as xhrio]
             [om.core :as om :include-macros true]
             [om.dom :as dom :include-macros true]
             [cljs-http.client :as http]
             [cljs.core.async :refer [put! <! >! chan timeout]])
   (:require-macros
-    [cljs.core.async.macros :refer [go alt!]])
-  :gen-class)
+    [cljs.core.async.macros :refer [go alt!]]))
 
 (enable-console-print!)
 
@@ -82,7 +81,7 @@
       (render [this]
         (dom/div nil
           (dom/h1 nil "Cowan's Game Of Life")
-          (om/build world-view data {:opts {:dimensions (get-dimensions)
+          (om/build world-view data {:opts {:dimensions 40
                                             :poll-interval 2000}})))))
 
 (om/root
