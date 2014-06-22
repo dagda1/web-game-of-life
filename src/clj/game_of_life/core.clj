@@ -54,7 +54,7 @@
 
 (defn init-world [params]
   (let [dimensions (Integer/parseInt params)
-     world (vec (for [i (range dimensions)] (vec (take dimensions (repeatedly #(rand-int 2))))))]
+     world (vec (for [_ (range dimensions)] (vec (take dimensions (repeatedly #(rand-int 2))))))]
     (json/generate-string world)))
 
 (defresource world [dimensions]
