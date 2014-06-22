@@ -7,6 +7,4 @@ pom.xml
 /out/
 /target/
 .nrepl-port
-.lein-deps-sum
-.lein-repl-history
-.lein-failures
+.lein-*

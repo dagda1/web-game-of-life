@@ -21,6 +21,8 @@
     [om "0.5.0"]
   ]
 
+  :uberjar-name "web-game-of-life.jar"
+
   :profiles {
     :dev {
       :dependencies [
