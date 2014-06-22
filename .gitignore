@@ -3,7 +3,6 @@ pom.xml
 /lib/
 /classes/
 /targets/
-/resources/public/js/
 /target/
 .nrepl-port
 .lein-*
